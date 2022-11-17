@@ -15,16 +15,26 @@ def hello_message(message):
     bot.send_message(message.chat.id, reply)
 
 
+# @bot.message_handler(content_types=['text'])
+# def query_text(message):
+#     print(message)
+#     bot.send_message(message.chat.id, message, parse_mode='html')
+
+
 @bot.inline_handler(func=lambda query: True)
-def query_text(message):
-    print(message)
-    bot.send_message(message.chat.id, message, parse_mode='html')
+def query_photo(inline_query):
+    try:
+        r = types.InlineQueryResultPhoto('1',
+                                         'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/kitten.jpg',
+                                         'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/kitten.jpg',
+                                         input_message_content=types.InputTextMessageContent('hi'))
+        r2 = types.InlineQueryResultPhoto('2',
+                                          'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg',
+                                          'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg')
+        bot.answer_inline_query(inline_query.id, [r, r2], cache_time=1)
+    except Exception as e:
+        print(e)
 
-
-@bot.message_handler(content_types=['text'])
-def query_text(message):
-    print(message)
-    bot.send_message(message.chat.id, message, parse_mode='html')
 
 # start bot
 bot.polling(none_stop=True)
